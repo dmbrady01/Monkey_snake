@@ -1,3 +1,4 @@
+import numpy as np
 import scipy.signal as ssp
 
 def FilterSignal(signal, **kwargs):
@@ -72,3 +73,16 @@ def FilterSignal(signal, **kwargs):
     b, a = ssp.butter(order, params, btype=btype, analog=False)
 
     return ssp.filtfilt(b, a, signal, axis=options['axis'])
+
+def zscore(test_signal, ref_signal, **kwargs):
+    options = {
+        'axis': 0
+    }
+    options.update(kwargs)
+    mean_reference = np.mean(ref_signal, axis=kwargs['axis'])
+    std_baseline = np.std(ref_signal, axis=kwargs['axis'])
+    z_score = (test_signal - mean_reference)/std_baseline
+    
+    return z_score
+   
+
